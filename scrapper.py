@@ -46,6 +46,6 @@ def getsEmailsFromFacebookAboutPage(facebookHtml):
     email = soup.findAll(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
     for emails in email:
         companyEmails.append(emails)
-    
     print(companyEmails)
+    
  

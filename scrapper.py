@@ -1,22 +1,51 @@
 import requests
 
-import bs4 as BeautifulSoup
+from bs4 import BeautifulSoup
 
-def dataGetter():
-    searchUrl = 'https://www.google.com/search?q=csquared'
+import re
+
+
+
+def getsRawData(companyName):
+    '''collects the HTML data '''
+
+    searchUrl = f'https://www.google.com/search?q={companyName}'
     data = requests.get(searchUrl)
     response = data.text
     return response
 
-def linkGetter(page):
+def getsLinksFromRawData(YOUR_MARKUP):
+
+    ''' The function gets the facebook links of the company '''
    
-    soup = BeautifulSoup(page)
-
-    all_links = soup.find_all('a')
-
-    for links in all_links:
-        href = links.get('href')
-        print(href)
-
+    soup = BeautifulSoup(YOUR_MARKUP, "html.parser")
     
     
+    for link in soup.findAll('a', attrs={'href': re.compile("a")}):
+        href = link.get('href')
+        if "facebook.com" in href:
+            return href
+            
+
+def getsTheFacebookAboutPage(href, companyName):
+
+    ''' the function collects the facebook about page data '''
+
+    rawFacebookLink = href.strip('')
+    facebookLink = slice(7, 31)
+    faceBookAboutPageUrl = f'{rawFacebookLink[facebookLink]}/pg/{companyName}/About/?ref=page_internal'
+    aboutPageData = requests.get(faceBookAboutPageUrl)
+    return aboutPageData.text
+
+
+def getsEmailsFromFacebookAboutPage(facebookHtml):
+
+    soup = BeautifulSoup(facebookHtml, "html.parser")
+
+    companyEmails = []
+    email = soup.findAll(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+    for emails in email:
+        companyEmails.append(emails)
+    
+    print(companyEmails)
+ 

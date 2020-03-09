@@ -1,9 +1,15 @@
 import scrapper
 
+companyName = input("Enter company name: ")
 
-scrapper.dataGetter()
+page = scrapper.getsRawData(companyName)
 
-page = scrapper.dataGetter()
+aboutLink = scrapper.getsLinksFromRawData(page)
 
+scrapper.getsLinksFromRawData(page)
 
-scrapper.linkGetter(page)
+scrapper.getsTheFacebookAboutPage(aboutLink, companyName)
+
+facebookHtml = scrapper.getsTheFacebookAboutPage(aboutLink, companyName)
+
+scrapper.getsEmailsFromFacebookAboutPage(facebookHtml)

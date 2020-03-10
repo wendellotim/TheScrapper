@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re
 
 
-def getsRawData(companyName):
+def getRawData(companyName):
     '''collects the HTML data '''
 
     searchUrl = f'https://www.google.com/search?q={companyName}'

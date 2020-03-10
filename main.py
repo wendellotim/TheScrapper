@@ -2,7 +2,7 @@ import scrapper
 
 companyName = input("Enter company name: ")
 
-page = scrapper.getsRawData(companyName)
+page = scrapper.getRawData(companyName)
 
 aboutLink = scrapper.getsLinksFromRawData(page)
 

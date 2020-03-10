@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import re
 
 
-
 def getsRawData(companyName):
     '''collects the HTML data '''
 
@@ -14,21 +13,19 @@ def getsRawData(companyName):
     response = data.text
     return response
 
-def getsLinksFromRawData(YOUR_MARKUP):
 
+def getsLinksFromRawData(YOUR_MARKUP):
     ''' The function gets the facebook links of the company '''
-   
+
     soup = BeautifulSoup(YOUR_MARKUP, "html.parser")
-    
-    
+
     for link in soup.findAll('a', attrs={'href': re.compile("a")}):
         href = link.get('href')
         if "facebook.com" in href:
             return href
-            
+
 
 def getsTheFacebookAboutPage(href, companyName):
-
     ''' the function collects the facebook about page data '''
 
     rawFacebookLink = href.strip('')
@@ -47,5 +44,3 @@ def getsEmailsFromFacebookAboutPage(facebookHtml):
     for emails in email:
         companyEmails.append(emails)
     print(companyEmails)
-    
- 

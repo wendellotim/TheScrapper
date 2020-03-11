@@ -56,4 +56,5 @@ def getsEmailsFromFacebookAboutPage(facebookHtml):
 def extractEmailsFromString(string):
     """extracts email addresses from a string"""
     emails = re.findall(r"\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+", string)
+    # emails = re.findall(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", string)
     return emails

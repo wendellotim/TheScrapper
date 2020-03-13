@@ -5,6 +5,12 @@ from bs4 import BeautifulSoup
 import re
 
 
+def readCompanyName():
+    with open("companies.txt", "r") as companies:
+        for company in companies:
+            return company
+
+
 def getRawData(companyName):
     '''collects the HTML data '''
 
@@ -14,7 +20,7 @@ def getRawData(companyName):
     return response
 
 
-def getsLinksFromRawData(YOUR_MARKUP):
+def getLinksFromRawData(YOUR_MARKUP):
     ''' The function gets the facebook links of the company '''
 
     soup = BeautifulSoup(YOUR_MARKUP, "html.parser")
@@ -25,7 +31,7 @@ def getsLinksFromRawData(YOUR_MARKUP):
             return href
 
 
-def getsTheFacebookAboutPage(href, companyName):
+def getTheFacebookAboutPage(href, companyName):
     ''' the function collects the facebook about page data '''
 
     rawFacebookLink = href.strip('')
@@ -35,7 +41,7 @@ def getsTheFacebookAboutPage(href, companyName):
     return aboutPageData.text
 
 
-def getsEmailsFromFacebookAboutPage(facebookHtml):
+def getEmailsFromFacebookAboutPage(facebookHtml):
 
     soup = BeautifulSoup(facebookHtml, "html.parser")
 

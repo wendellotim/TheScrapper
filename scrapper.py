@@ -36,7 +36,7 @@ def getTheFacebookAboutPage(href, companyName):
 
     rawFacebookLink = href.strip('')
     facebookLink = slice(7, 31)
-    faceBookAboutPageUrl = f'{rawFacebookLink[facebookLink]}/pg/{companyName}/About/?ref=page_internal'
+    faceBookAboutPageUrl = f'{rawFacebookLink[facebookLink]}/pg/{companyName}/about/?ref=page_internal'
     aboutPageData = requests.get(faceBookAboutPageUrl)
     return aboutPageData.text
 
@@ -46,7 +46,21 @@ def getEmailsFromFacebookAboutPage(facebookHtml):
     soup = BeautifulSoup(facebookHtml, "html.parser")
 
     companyEmails = []
-    email = soup.findAll(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-    for emails in email:
-        companyEmails.append(emails)
+    emails = soup.findAll(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+    print(emails)
+
+    # emails = re.findall(r"\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+", facebookHtml)
+    # print(emails)
+
+    # print(facebookHtml.index("@"))
+
+    for email in emails:
+        companyEmails.append(email)
     print(companyEmails)
+
+
+def extractEmailsFromString(string):
+    """extracts email addresses from a string"""
+    emails = re.findall(r"\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+", string)
+    # emails = re.findall(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", string)
+    return emails

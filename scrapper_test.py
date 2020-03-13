@@ -11,3 +11,9 @@ def test_getRawData():
 
     # assert
     assert len(raw_data) > 100
+
+def test_extractEmailsFromString():
+    """unit test"""
+    raw = "something then an email@gmail.com then more data"
+    emails = scrapper.extractEmailsFromString(raw)
+    print(emails)

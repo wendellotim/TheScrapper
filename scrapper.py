@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 import re
 
 
-def readCompanyName():
-    with open("companies.txt", "r") as companies:
+def readCompanyName(filename="companies.txt"):
+    with open(filename, "r") as companies:
         for company in companies:
             return company
 
@@ -31,36 +31,40 @@ def getLinksFromRawData(YOUR_MARKUP):
             return href
 
 
-def getTheFacebookAboutPage(href, companyName):
+def getTheFacebookAboutPage(href):
     ''' the function collects the facebook about page data '''
 
     rawFacebookLink = href.strip('')
-    facebookLink = slice(7, 31)
-    faceBookAboutPageUrl = f'{rawFacebookLink[facebookLink]}/pg/{companyName}/about/?ref=page_internal'
+    finder = rawFacebookLink.find('&')
+    facebookLink = slice(31, finder)
+    return rawFacebookLink[facebookLink]
+
+def composeFacebookAboutUrl(companyFacebookId):
+    faceBookAboutPageUrl = f'https://www.facebook.com/pg{companyFacebookId}about/?ref=page_internal'
+    return faceBookAboutPageUrl
+
+
+def getFacebookAboutPageData(faceBookAboutPageUrl):
+    
     aboutPageData = requests.get(faceBookAboutPageUrl)
     return aboutPageData.text
 
 
-def getEmailsFromFacebookAboutPage(facebookHtml):
+def getEmailsFromFacebookAboutPage(facebookAboutPageData):
 
-    soup = BeautifulSoup(facebookHtml, "html.parser")
+    
+    rawEmail = re.findall(r"\w+[.|\w]\w+&#064;\w+[.]\w+[.|\w+]\w+", facebookAboutPageData)
+    
+    email = rawEmail[0]
 
-    companyEmails = []
-    emails = soup.findAll(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-    print(emails)
+    companyEmail = email.replace("&#064;","@")
 
-    # emails = re.findall(r"\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+", facebookHtml)
-    # print(emails)
+    return companyEmail
 
-    # print(facebookHtml.index("@"))
+def writeCompanyContact(companyEmail, companyName):
 
-    for email in emails:
-        companyEmails.append(email)
-    print(companyEmails)
-
-
-def extractEmailsFromString(string):
-    """extracts email addresses from a string"""
-    emails = re.findall(r"\w+[.|\w]\w+@\w+[.]\w+[.|\w+]\w+", string)
-    # emails = re.findall(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", string)
-    return emails
+    companyName = companyName.strip()
+    info = f"{companyName}:{companyEmail}"
+    contact = info.strip()
+    with open("contactinfo.txt", "w") as contactinfo:
+        contactinfo.write(contact)

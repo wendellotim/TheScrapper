@@ -8,8 +8,20 @@ aboutLink = scrapper.getLinksFromRawData(page)
 
 scrapper.getLinksFromRawData(page)
 
-scrapper.getTheFacebookAboutPage(aboutLink, companyName)
+scrapper.getTheFacebookAboutPage(aboutLink)
 
-facebookHtml = scrapper.getTheFacebookAboutPage(aboutLink, companyName)
+companyFacebookId = scrapper.getTheFacebookAboutPage(aboutLink)
 
-scrapper.getEmailsFromFacebookAboutPage(facebookHtml)
+scrapper.composeFacebookAboutUrl(companyFacebookId)
+
+faceBookAboutPageUrl = scrapper.composeFacebookAboutUrl(companyFacebookId)
+
+scrapper.getFacebookAboutPageData(faceBookAboutPageUrl)
+
+facebokAboutPageData = scrapper.getFacebookAboutPageData(faceBookAboutPageUrl)
+
+scrapper.getEmailsFromFacebookAboutPage(facebokAboutPageData)
+
+companyEmail = scrapper.getEmailsFromFacebookAboutPage(facebokAboutPageData)
+
+scrapper.writeCompanyContact(companyEmail, companyName)
